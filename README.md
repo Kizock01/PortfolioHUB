@@ -7,13 +7,13 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 📬 **Conecte-se comigo:**
 
 * 📧 **Email:** gbastosmoreira@gmail.com
-* 🔗 **LinkedIn:** [linkedin.com/in/guilherme-bastos-0a87382aa]
+* 🔗 **LinkedIn:** [Guilherme Bastos](https://www.linkedin.com/in/guilherme-bastos-0a87382aa)
 
 🎓 **Formação Acadêmica**
 
-* 🏫 **Ensino Médio técnico em Biotecnologia** — IFG-FORMOSA
-* 🎓 **Graduação em Inteligência Artificial** — UniCEUB (Em andamento - 1º Semestre)
-* 🎓 **Técnico em Inteligência Artificial** — IFNMG (EAD/Em andamento - 1º Semestre)
+* 🏫 **Ensino Médio Técnico em Biotecnologia** — IFG-FORMOSA
+* 🎓 **Graduação em Inteligência Artificial** — UniCEUB (Em andamento)
+* 🎓 **Técnico em Inteligência Artificial** — IFNMG (EAD / Em andamento)
 
 🧠 **Habilidades Técnicas e Tecnologias**
 
@@ -35,6 +35,15 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 
 ## 📁 Estrutura do Repositório
 
-* **[/projetos-academicos](./projetos-academicos)**: Trabalhos academicos
-* **[/projetos-pessoais](./projetos-pessoais)**: Scripts de automação e estudos de IA.
-* **[/documentacao](./documentacao)**: Materiais de apoio e apresentações.
+[cite_start]Este ecossistema foi desenvolvido para centralizar minhas atividades e compor meu perfil profissional de acordo com as melhores práticas de arquitetura de diretórios e versionamento de código[cite: 5].
+
+* [cite_start]**[/projetos-academicos](./projetos-academicos)**: Projetos, pesquisas de campo e códigos desenvolvidos durante a minha formação acadêmica[cite: 5].
+* [cite_start]**[/projetos-pessoais](./projetos-pessoais)**: Scripts autorais de automação, algoritmos de teste e estudos práticos voltados para IA[cite: 5].
+* [cite_start]**[/documentacao](./documentacao)**: Arquitetura de planejamento, especificações técnicas de projetos e guias de implantação[cite: 37].
+
+---
+
+## 🌐 Deploy e Demonstrações
+
+* [cite_start]💻 **Live Application (GitHub Pages):** [Acesse o ambiente online do meu Portfólio](https://Kizock01.github.io/PortfolioHUB/) [cite: 18, 49]
+* [cite_start]🎥 **Apresentação Técnica (YouTube):** [Assista ao walkthrough técnico do repositório](COLE_O_LINK_DO_SEU_VIDEO_AQUI) [cite: 57]
