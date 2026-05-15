@@ -24,6 +24,7 @@ Cultura Maker & Digital: Forte interesse em empreendedorismo digital e inovaçã
 💡 Desenvolver soluções de automação e machine learning aplicadas a negócios.
 🌍 Expandir minha atuação no ambiente digital através de projetos open-source.
 ## 📁 Estrutura do Repositório
-* [cite_start]**/projetos-academicos**: Trabalhos da UniCEUB e IFNMG[cite: 37].
-* [cite_start]**/projetos-pessoais**: Scripts de automação e estudos de IA[cite: 37].
-* [cite_start]**/documentacao**: Materiais de apoio e apresentações[cite: 37].
+
+* **/projetos-academicos**: Trabalhos da UniCEUB e IFNMG.
+* **/projetos-pessoais**: Scripts de automação e estudos de IA.
+* **/documentacao**: Materiais de apoio e apresentações.
