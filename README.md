@@ -24,7 +24,7 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 🤖 **Projetos e Interesses**
 
 * **Inteligência Artificial Aplicada:** Desenvolvimento de automações e uso estratégico de ferramentas de IA.
-* **Python Scripting:** Criação de scripts para resolução de problemas lógicos.
+* **Python Scripting:** Criação de scripts para resolution de problemas lógicos.
 
 🎯 **Objetivos Atuais**
 
@@ -37,13 +37,12 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 
 Este ecossistema foi desenvolvido para centralizar minhas atividades e compor meu perfil profissional de acordo com as melhores práticas de arquitetura de diretórios e versionamento de código.
 
-* **[/projetos-academicos](./projetos-academicos)**: Projetos, pesquisas de campo e códigos desenvolvidos durante a minha formação acadêmica.
-* **[/projetos-pessoais](./projetos-pessoais)**: Scripts autorais de automação, algoritmos de teste e estudos práticos voltados para IA.
-* **[/documentacao](./documentacao)**: Arquitetura de planejamento, especificações técnicas de projetos e guias de implantação.
+* **[📁 /projetos-academicos](https://github.com/Kizock01/PortfolioHUB/tree/main/projetos-academicos)**: Projetos, pesquisas de campo e códigos desenvolvidos durante a minha formação acadêmica.
+* **[📁 /projetos-pessoais](https://github.com/Kizock01/PortfolioHUB/tree/main/projetos-pessoais)**: Scripts autorais de automação, algoritmos de teste e estudos práticos voltados para IA.
+* **[📁 /documentacao](https://github.com/Kizock01/PortfolioHUB/tree/main/documentacao)**: Arquitetura de planejamento, especificações técnicas de projetos e guias de implantação.
 
 ---
 
 ## 🌐 Deploy e Demonstrações
 
 * 💻 **Live Application (GitHub Pages):** [Acesse o ambiente online do meu Portfólio](https://Kizock01.github.io/PortfolioHUB/)
-* 🎥 **Apresentação Técnica (YouTube):** [Assista ao walkthrough técnico do repositório](COLE_O_LINK_DO_SEU_VIDEO_AQUI)
