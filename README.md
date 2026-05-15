@@ -35,6 +35,6 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 
 ## 📁 Estrutura do Repositório
 
-* **[/projetos-academicos](./projetos-academicos)**: Trabalhos da UniCEUB e IFNMG.
+* **[/projetos-academicos](./projetos-academicos)**: Trabalhos academicos
 * **[/projetos-pessoais](./projetos-pessoais)**: Scripts de automação e estudos de IA.
 * **[/documentacao](./documentacao)**: Materiais de apoio e apresentações.
