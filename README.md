@@ -35,15 +35,15 @@ Estudante de Inteligência Artificial, focado em transformar dados em soluções
 
 ## 📁 Estrutura do Repositório
 
-[cite_start]Este ecossistema foi desenvolvido para centralizar minhas atividades e compor meu perfil profissional de acordo com as melhores práticas de arquitetura de diretórios e versionamento de código[cite: 5].
+Este ecossistema foi desenvolvido para centralizar minhas atividades e compor meu perfil profissional de acordo com as melhores práticas de arquitetura de diretórios e versionamento de código.
 
-* **[/projetos-academicos](./projetos-academicos)**: Projetos, pesquisas de campo e códigos desenvolvidos durante a minha formação acadêmica[cite: 5].
-* **[/projetos-pessoais](./projetos-pessoais)**: Scripts autorais de automação, algoritmos de teste e estudos práticos voltados para IA[cite: 5].
-* **[/documentacao](./documentacao)**: Arquitetura de planejamento, especificações técnicas de projetos e guias de implantação[cite: 37].
+* **[/projetos-academicos](./projetos-academicos)**: Projetos, pesquisas de campo e códigos desenvolvidos durante a minha formação acadêmica.
+* **[/projetos-pessoais](./projetos-pessoais)**: Scripts autorais de automação, algoritmos de teste e estudos práticos voltados para IA.
+* **[/documentacao](./documentacao)**: Arquitetura de planejamento, especificações técnicas de projetos e guias de implantação.
 
 ---
 
 ## 🌐 Deploy e Demonstrações
 
-* 💻 **Live Application (GitHub Pages):** [Acesse o ambiente online do meu Portfólio](https://Kizock01.github.io/PortfolioHUB/) [cite: 18, 49]
-* 🎥 **Apresentação Técnica (YouTube):** [Assista ao walkthrough técnico do repositório](COLE_O_LINK_DO_SEU_VIDEO_AQUI) [cite: 57]
+* 💻 **Live Application (GitHub Pages):** [Acesse o ambiente online do meu Portfólio](https://Kizock01.github.io/PortfolioHUB/)
+* 🎥 **Apresentação Técnica (YouTube):** [Assista ao walkthrough técnico do repositório](COLE_O_LINK_DO_SEU_VIDEO_AQUI)
