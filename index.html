@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYS.PORTFOLIO | Guilherme Bastos</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Roboto+Mono:wght@400;700&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
 
         :root {
             --bg-base: #050505;
@@ -18,117 +22,163 @@
         }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Share Tech Mono', monospace;
             background-color: var(--bg-base);
             color: var(--text-main);
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at top center, #1a0005 0%, var(--bg-base) 60%);
+            padding: 40px 0; /* Garante respiro em telas menores */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Fundo com gradiente radial E um grid sutil de tecnologia */
+            background-image: 
+                radial-gradient(circle at top center, #150004 0%, var(--bg-base) 70%),
+                linear-gradient(rgba(255, 0, 60, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 60, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            overflow-y: auto;
         }
 
-        /* Animações Iniciais */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ANIMAÇÃO PROFISSIONAL: Suave, com curva de desaceleração (Cubic Bezier) e profundidade (Scale) */
+        @keyframes smoothReveal {
+            0% { 
+                opacity: 0; 
+                transform: translateY(40px) scale(0.97); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
         }
 
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 10px var(--border-glow); }
-            50% { box-shadow: 0 0 20px var(--red-neon); }
-            100% { box-shadow: 0 0 10px var(--border-glow); }
+            0% { box-shadow: 0 0 8px var(--border-glow); }
+            50% { box-shadow: 0 0 15px var(--red-neon); }
+            100% { box-shadow: 0 0 8px var(--border-glow); }
         }
 
         header {
             text-align: center;
-            padding: 5rem 2rem 3rem;
-            border-bottom: 2px solid var(--red-dark);
-            animation: fadeUp 0.8s ease forwards;
+            padding: 0 2rem 2rem;
+            margin-bottom: 10px;
+            opacity: 0; /* Inicia invisível para a animação */
+            animation: smoothReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.1s; /* Entra primeiro */
         }
 
         header h1 {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--text-main);
-            text-shadow: 0 0 15px var(--red-neon);
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(255, 0, 60, 0.6);
         }
 
         header p {
             font-family: 'Roboto Mono', monospace;
             color: var(--red-neon);
-            font-size: 1.1rem;
-            margin-top: 10px;
+            font-size: 0.95rem;
+            margin: 10px 0 0 0;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.5fr 1fr;
             gap: 30px;
-            animation: fadeUp 1s ease forwards;
-            animation-delay: 0.2s;
-            opacity: 0; /* Começa invisível para a animação */
         }
 
         @media (max-width: 850px) {
             .container { grid-template-columns: 1fr; }
         }
 
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
         .panel {
-            background-color: var(--bg-panel);
+            background-color: rgba(15, 15, 17, 0.85); /* Fundo levemente translúcido */
+            backdrop-filter: blur(5px); /* Efeito de vidro temperado sutil */
             border: 1px solid var(--red-dark);
             border-radius: 8px;
-            padding: 30px;
+            padding: 30px 30px 30px 35px;
             position: relative;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            
+            /* Preparação para a animação em cascata via variável do HTML */
+            opacity: 0;
+            animation: smoothReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: var(--delay);
         }
 
         .panel:hover {
             transform: translateY(-5px);
             border-color: var(--red-neon);
-            box-shadow: 0 10px 30px rgba(255, 0, 60, 0.1);
+            box-shadow: 0 8px 25px rgba(255, 0, 60, 0.15);
         }
 
         .panel::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            top: -1px;
+            left: -1px;
             width: 4px;
-            height: 100%;
+            height: calc(100% + 2px);
             background-color: var(--red-neon);
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
+            transition: width 0.3s ease;
+        }
+
+        .panel:hover::before {
+            width: 6px; /* A borda vermelha fica levemente mais grossa no hover */
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
             margin-top: 0;
+            margin-bottom: 15px;
             border-bottom: 1px solid #222;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
+        .num {
+            color: var(--red-neon);
+            font-weight: bold;
+        }
+
+        .panel p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
         .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: auto;
         }
 
         .skill-tag {
-            background-color: #0a0a0a;
+            flex: 1 1 auto;
+            background-color: rgba(10, 10, 10, 0.7);
             border: 1px solid var(--red-dark);
             color: var(--text-muted);
-            padding: 10px 15px;
+            padding: 10px 12px;
             text-align: center;
             border-radius: 4px;
             font-family: 'Roboto Mono', monospace;
@@ -140,41 +190,45 @@
         .skill-tag:hover {
             color: var(--text-main);
             border-color: var(--red-neon);
-            box-shadow: 0 0 10px var(--border-glow);
+            box-shadow: 0 0 12px var(--border-glow);
+            transform: translateY(-2px);
         }
 
         .formation-block {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+        }
+        .formation-block:last-child {
+            margin-bottom: 0;
         }
 
         .formation-block h3 {
             margin: 0 0 5px 0;
             color: var(--text-main);
-            font-size: 1.3rem;
+            font-size: 1.15rem;
         }
 
         .formation-block p {
             margin: 0;
             color: var(--text-muted);
             font-family: 'Roboto Mono', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .interactive-links {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: auto;
         }
 
         .btn-neon {
             display: inline-block;
             text-align: center;
-            padding: 15px 20px;
+            padding: 12px 15px;
             background-color: transparent;
             color: var(--text-main);
             text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -207,6 +261,16 @@
             left: 0;
         }
 
+        .email-display {
+            text-align: center;
+            margin-top: 15px;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px dashed #222;
+            padding-top: 12px;
+        }
+
     </style>
 </head>
 <body>
@@ -218,14 +282,14 @@
 
     <div class="container">
         
-        <div class="main-content">
-            <div class="panel">
-                <h2><span style="color: var(--red-neon);">01.</span> Perfil Profissional</h2>
+        <div class="left-column">
+            <div class="panel" style="--delay: 0.3s;">
+                <h2><span class="num">01.</span> Perfil Profissional</h2>
                 <p>Estudante de IA com foco em automação, processamento de dados e estruturação de rotinas lógicas. Busco aplicar soluções inteligentes para otimizar fluxos corporativos e resolver problemas práticos através de programação estruturada e ferramentas tecnológicas.</p>
             </div>
 
-            <div class="panel" style="margin-top: 30px;">
-                <h2><span style="color: var(--red-neon);">02.</span> Arsenal Tecnológico</h2>
+            <div class="panel" style="--delay: 0.5s;">
+                <h2><span class="num">02.</span> Arsenal Tecnológico</h2>
                 <div class="skills-grid">
                     <div class="skill-tag">Python</div>
                     <div class="skill-tag">IA Generativa</div>
@@ -239,9 +303,9 @@
             </div>
         </div>
 
-        <div class="side-content">
-            <div class="panel">
-                <h2><span style="color: var(--red-neon);">03.</span> Formação</h2>
+        <div class="right-column">
+            <div class="panel" style="--delay: 0.4s;">
+                <h2><span class="num">03.</span> Formação</h2>
                 
                 <div class="formation-block">
                     <h3>Inteligência Artificial</h3>
@@ -254,15 +318,21 @@
                 </div>
             </div>
 
-            <div class="panel" style="margin-top: 30px;">
-                <h2><span style="color: var(--red-neon);">04.</span> Conexões</h2>
+            <div class="panel" style="--delay: 0.6s;">
+                <h2><span class="num">04.</span> Contatos</h2>
                 <div class="interactive-links">
                     <a href="https://github.com/Kizock01/PortfolioHUB" target="_blank" class="btn-neon">
-                        [ SYSTEM: GitHub ]
+                        GITHUB
                     </a>
                     <a href="https://www.linkedin.com/in/guilherme-bastos-0a87382aa" target="_blank" class="btn-neon">
-                        [ SYSTEM: LinkedIn ]
+                        LINKEDIN
                     </a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=gbastosmoreira@gmail.com" target="_blank" class="btn-neon">
+                        E-MAIL
+                    </a>
+                </div>
+                <div class="email-display">
+                    >_ gbastosmoreira@gmail.com
                 </div>
             </div>
         </div>
