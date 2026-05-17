@@ -3,188 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfólio Profissional | Guilherme Bastos</title>
+    <title>SYS.PORTFOLIO | Guilherme Bastos</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto+Mono:wght@400;700&display=swap');
+
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --text-color: #c9d1d9;
-            --text-main: #f0f6fc;
-            --accent-color: #58a6ff;
-            --border-color: #30363d;
+            --bg-base: #050505;
+            --bg-panel: #0f0f11;
+            --red-neon: #ff003c;
+            --red-dark: #6e0018;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --border-glow: rgba(255, 0, 60, 0.4);
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-        header {
-            background: linear-gradient(135deg, #040d21 0%, #0d1117 100%);
-            padding: 4rem 2rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-        header h1 {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-base);
             color: var(--text-main);
             margin: 0;
-            font-size: 2.5rem;
-            font-weight: 600;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at top center, #1a0005 0%, var(--bg-base) 60%);
         }
+
+        /* Animações Iniciais */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px var(--border-glow); }
+            50% { box-shadow: 0 0 20px var(--red-neon); }
+            100% { box-shadow: 0 0 10px var(--border-glow); }
+        }
+
+        header {
+            text-align: center;
+            padding: 5rem 2rem 3rem;
+            border-bottom: 2px solid var(--red-dark);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-main);
+            text-shadow: 0 0 15px var(--red-neon);
+        }
+
         header p {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            margin-top: 0.5rem;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--red-neon);
+            font-size: 1.1rem;
+            margin-top: 10px;
         }
+
         .container {
             width: 90%;
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 40px auto;
-        }
-        .grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 25px;
+            gap: 30px;
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.2s;
+            opacity: 0; /* Começa invisível para a animação */
         }
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
+
+        @media (max-width: 850px) {
+            .container { grid-template-columns: 1fr; }
         }
-        .section {
-            background: var(--card-bg);
+
+        .panel {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--red-dark);
+            border-radius: 8px;
             padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 25px;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            border-color: var(--red-neon);
+            box-shadow: 0 10px 30px rgba(255, 0, 60, 0.1);
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--red-neon);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
         h2 {
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            font-size: 2rem;
+            text-transform: uppercase;
             margin-top: 0;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        .skills-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 0;
-            list-style: none;
-        }
-        .skills-list li {
-            background: #21262d;
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
-        .formation-item {
-            margin-bottom: 15px;
-        }
-        .formation-title {
-            font-weight: bold;
-            color: var(--text-main);
-        }
-        .formation-institution {
-            font-size: 0.95rem;
-            color: var(--accent-color);
-        }
-        .links-container {
-            display: flex;
-            flex-direction: column;
             gap: 12px;
         }
-        .btn {
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background-color: #0a0a0a;
+            border: 1px solid var(--red-dark);
+            color: var(--text-muted);
+            padding: 10px 15px;
+            text-align: center;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            color: var(--text-main);
+            border-color: var(--red-neon);
+            box-shadow: 0 0 10px var(--border-glow);
+        }
+
+        .formation-block {
+            margin-bottom: 20px;
+        }
+
+        .formation-block h3 {
+            margin: 0 0 5px 0;
+            color: var(--text-main);
+            font-size: 1.3rem;
+        }
+
+        .formation-block p {
+            margin: 0;
+            color: var(--text-muted);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .interactive-links {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-neon {
+            display: inline-block;
+            text-align: center;
+            padding: 15px 20px;
+            background-color: transparent;
             color: var(--text-main);
             text-decoration: none;
-            border-radius: 6px;
+            font-size: 1.1rem;
             font-weight: bold;
-            transition: background-color 0.2s, transform 0.1s;
-            border: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid var(--red-neon);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
         }
-        .btn-github { background-color: #238636; border-color: #2ea44f; }
-        .btn-github:hover { background-color: #2ea44f; }
-        .btn-linkedin { background-color: #1f6feb; border-color: #388bfd; }
-        .btn-linkedin:hover { background-color: #388bfd; }
-        .btn:active { transform: scale(0.98); }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: var(--red-neon);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-neon:hover {
+            color: #000;
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        .btn-neon:hover::before {
+            left: 0;
+        }
+
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Guilherme Bastos Moreira 👋</h1>
-        <p>Estudante de Inteligência Artificial & Entusiasta de Automação</p>
+        <h1>Guilherme Bastos</h1>
+        <p>>_ Estudante de Inteligência Artificial & Desenvolvedor Python</p>
     </header>
 
     <div class="container">
-        <div class="grid">
-            
-            <div>
-                <div class="section">
-                    <h2>👨‍💻 Perfil Profissional</h2>
-                    <p>Estudante de Inteligência Artificial focado em transformar dados brutos em insights e soluções inteligentes. Apaixonado pelo desenvolvimento de automações de processos, otimização de fluxos de trabalho digitais e aplicação estratégica de algoritmos de IA Generativa e engenharia de prompt para resolver problemas reais de mercado.</p>
-                </div>
-
-                <div class="section">
-                    <h2>🧠 Habilidades Técnicas & Ferramentas</h2>
-                    <ul class="skills-list">
-                        <li>🐍 Python (Lógica & Scripts)</li>
-                        <li>🤖 Engenharia de Prompt</li>
-                        <li>⚙️ Automação de Fluxos de Trabalho</li>
-                        <li>🧠 IA Generativa</li>
-                        <li>📊 Microsoft Excel</li>
-                        <li>📝 Microsoft Word</li>
-                        <li>🛠️ Git & GitHub</li>
-                        <li>💻 Informática Básica</li>
-                    </ul>
-                </div>
-
-                <div class="section">
-                    <h2>🎯 Objetivos Profissionais</h2>
-                    <p>Buscar consolidação nas principais bibliotecas de análise de dados e machine learning aplicadas a negócios (como Pandas e NumPy), visando atuar no desenvolvimento de soluções de dados robustas e automatizadas.</p>
-                </div>
+        
+        <div class="main-content">
+            <div class="panel">
+                <h2><span style="color: var(--red-neon);">01.</span> Perfil Profissional</h2>
+                <p>Estudante de IA com foco em automação, processamento de dados e estruturação de rotinas lógicas. Busco aplicar soluções inteligentes para otimizar fluxos corporativos e resolver problemas práticos através de programação estruturada e ferramentas tecnológicas.</p>
             </div>
 
-            <div>
-                <div class="section">
-                    <h2>🎓 Formação</h2>
-                    <div class="formation-item">
-                        <div class="formation-title">Graduação em Inteligência Artificial</div>
-                        <div class="formation-institution">UniCEUB (Em andamento)</div>
-                    </div>
-                    <div class="formation-item">
-                        <div class="formation-title">Técnico em Inteligência Artificial</div>
-                        <div class="formation-institution">IFNMG (EAD / Em andamento)</div>
-                    </div>
-                    <div class="formation-item">
-                        <div class="formation-title">Ensino Médio Técnico em Biotecnologia</div>
-                        <div class="formation-institution">IFG - Campus Formosa</div>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h2>🌐 Conexões</h2>
-                    <div class="links-container">
-                        <a href="https://github.com/Kizock01/PortfolioHUB" target="_blank" class="btn btn-github">
-                            <span>Ver Repositório no GitHub</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/guilherme-bastos-0a87382aa" target="_blank" class="btn btn-linkedin">
-                            <span>Acessar LinkedIn Profissional</span>
-                        </a>
-                    </div>
+            <div class="panel" style="margin-top: 30px;">
+                <h2><span style="color: var(--red-neon);">02.</span> Arsenal Tecnológico</h2>
+                <div class="skills-grid">
+                    <div class="skill-tag">Python</div>
+                    <div class="skill-tag">IA Generativa</div>
+                    <div class="skill-tag">Engenharia de Prompt</div>
+                    <div class="skill-tag">Git & GitHub</div>
+                    <div class="skill-tag">Inglês Avançado</div>
+                    <div class="skill-tag">Microsoft Excel</div>
+                    <div class="skill-tag">Microsoft Word</div>
+                    <div class="skill-tag">Automação de Dados</div>
                 </div>
             </div>
-
         </div>
+
+        <div class="side-content">
+            <div class="panel">
+                <h2><span style="color: var(--red-neon);">03.</span> Formação</h2>
+                
+                <div class="formation-block">
+                    <h3>Inteligência Artificial</h3>
+                    <p>UniCEUB | Graduação (Em andamento)</p>
+                </div>
+                
+                <div class="formation-block">
+                    <h3>Técnico em IA</h3>
+                    <p>IFNMG (EAD) | Técnico (Em andamento)</p>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top: 30px;">
+                <h2><span style="color: var(--red-neon);">04.</span> Conexões</h2>
+                <div class="interactive-links">
+                    <a href="https://github.com/Kizock01/PortfolioHUB" target="_blank" class="btn-neon">
+                        [ SYSTEM: GitHub ]
+                    </a>
+                    <a href="https://www.linkedin.com/in/guilherme-bastos-0a87382aa" target="_blank" class="btn-neon">
+                        [ SYSTEM: LinkedIn ]
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </body>
