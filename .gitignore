@@ -1,0 +1,18 @@
+node_modules/
+.next/
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.tsbuildinfo
+
+# Generated artifacts from packaged desktop/backend builds.
+projetos-pessoais/app-transcricao/build/
+projetos-pessoais/app-transcricao/dist/
+
+# Local environment files.
+.env
+.env.local
+.env.*.local
