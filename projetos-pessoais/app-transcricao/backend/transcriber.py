@@ -1,191 +1,126 @@
-﻿# backend/transcriber.py
-"""
-Transcrição com foco em fidelidade ao áudio (anti-alucinação).
-"""
+﻿from __future__ import annotations
 
-import logging
-import re
-from dataclasses import dataclass
-from typing import List
-
-import librosa
-import numpy as np
-import whisper
-
-logger = logging.getLogger(__name__)
+import shutil
+import tempfile
+from pathlib import Path
+from typing import Any
 
 
-@dataclass
-class TranscriptionResult:
-    text: str
-    raw_text: str
-    corrected_text: str
-    language: str
-    duration: float
-    segments: List[dict]
-    confidence: float
-    difficulty_level: str
+def _check_import(module_name: str) -> tuple[bool, str | None]:
+    try:
+        __import__(module_name)
+        return True, None
+    except Exception as exc:
+        return False, str(exc)
 
 
-class ConservativeCorrector:
-    """Somente ajustes conservadores: capitalização e pontuação básica."""
+class TranscriptionEngine:
+    """Small wrapper around faster-whisper with lazy model loading."""
 
-    @staticmethod
-    def normalize_spacing(text: str) -> str:
-        text = re.sub(r"\s+", " ", text).strip()
-        return text
-
-    @staticmethod
-    def sentence_case(text: str) -> str:
-        if not text:
-            return text
-        text = text[0].upper() + text[1:]
-        text = re.sub(r"([.!?]\s+)([a-zà-ú])", lambda m: m.group(1) + m.group(2).upper(), text)
-        return text
-
-    def enhance_text(self, text: str) -> str:
-        out = self.normalize_spacing(text)
-        out = self.sentence_case(out)
-        if out and out[-1] not in ".!?":
-            out += "."
-        return out
-
-
-class AdvancedTranscriber:
-    def __init__(self, model_size: str = "base", device: str = "cpu"):
+    def __init__(self, model_size: str = "small") -> None:
         self.model_size = model_size
-        self.device = device
-        self.model = None
-        self.corrector = ConservativeCorrector()
-        self._load_model()
+        self._model = None
+        self._model_error: str | None = None
 
     def _load_model(self):
-        logger.info("Carregando Whisper %s em %s", self.model_size, self.device)
-        self.model = whisper.load_model(self.model_size, device=self.device)
-        logger.info("Modelo Whisper carregado")
+        if self._model is not None:
+            return self._model
+        if self._model_error:
+            raise RuntimeError(self._model_error)
 
-    @staticmethod
-    def _segment_confidence(avg_logprob: float) -> float:
-        return max(0.0, min(1.0, 1.0 + (avg_logprob / 5.0)))
+        try:
+            from faster_whisper import WhisperModel
 
-    @staticmethod
-    def _anti_repetition(segments: List[dict]) -> List[dict]:
-        filtered = []
-        for seg in segments:
-            text_key = (seg.get("text") or "").strip().lower()
-            if filtered:
-                prev = filtered[-1]
-                prev_key = (prev.get("text") or "").strip().lower()
-                # Remove repetição consecutiva com baixa confiança.
-                if text_key and text_key == prev_key and seg.get("confidence", 0) < 0.7:
-                    continue
-            filtered.append(seg)
-        return filtered
+            # CPU int8 is a stable default on Windows and avoids CUDA dependency.
+            self._model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
+            return self._model
+        except Exception as exc:
+            self._model_error = f"faster-whisper indisponivel: {exc}"
+            raise RuntimeError(self._model_error) from exc
 
-    @staticmethod
-    def _chunk_ranges(duration_seconds: float, chunk_seconds: int = 15) -> List[tuple[float, float]]:
-        if duration_seconds <= 0:
-            return [(0.0, 0.0)]
-        ranges = []
-        start = 0.0
-        while start < duration_seconds:
-            end = min(duration_seconds, start + chunk_seconds)
-            ranges.append((start, end))
-            start = end
-        return ranges
+    def transcribe(self, audio_path: Path, language: str = "pt") -> dict[str, Any]:
+        model = self._load_model()
+        segments_iter, info = model.transcribe(
+            str(audio_path),
+            language=language,
+            task="transcribe",
+            beam_size=5,
+            temperature=0,
+            vad_filter=True,
+            condition_on_previous_text=False,
+        )
 
-    def transcribe(self, audio_path: str, language: str = "pt", difficulty_level: str = "medium") -> TranscriptionResult:
-        audio, sr = librosa.load(audio_path, sr=16000)
-        duration_seconds = len(audio) / sr if len(audio) else 0.0
-        chunks = self._chunk_ranges(duration_seconds, chunk_seconds=15)
+        segments = []
+        full_text_parts: list[str] = []
+        confidences: list[float] = []
 
-        all_segments: List[dict] = []
-        chunk_texts: List[str] = []
+        for idx, segment in enumerate(segments_iter):
+            text = (segment.text or "").strip()
+            if text:
+                full_text_parts.append(text)
 
-        for start, end in chunks:
-            result = self.model.transcribe(
-                audio_path,
-                language="pt",
-                task="transcribe",
-                fp16=(self.device == "cuda"),
-                temperature=0,
-                beam_size=5,
-                best_of=5,
-                condition_on_previous_text=False,
-                no_speech_threshold=0.6,
-                logprob_threshold=-1.0,
-                compression_ratio_threshold=2.4,
-                word_timestamps=False,
-                initial_prompt=None,
-            ) if (start == 0.0 and end == duration_seconds) else self.model.transcribe(
-                audio[int(start * sr): int(end * sr)],
-                language="pt",
-                task="transcribe",
-                fp16=(self.device == "cuda"),
-                temperature=0,
-                beam_size=5,
-                best_of=5,
-                condition_on_previous_text=False,
-                no_speech_threshold=0.6,
-                logprob_threshold=-1.0,
-                compression_ratio_threshold=2.4,
-                word_timestamps=False,
-                initial_prompt=None,
+            avg_logprob = float(getattr(segment, "avg_logprob", -1.0))
+            conf = max(0.0, min(1.0, 1.0 + (avg_logprob / 5.0)))
+            confidences.append(conf)
+
+            segments.append(
+                {
+                    "id": idx,
+                    "start": float(segment.start),
+                    "end": float(segment.end),
+                    "text": text,
+                    "confidence": round(conf, 4),
+                }
             )
 
-            segments_raw = result.get("segments", []) or []
-            for seg in segments_raw:
-                seg_text = (seg.get("text") or "").strip()
-                avg_logprob = float(seg.get("avg_logprob", -1.2))
-                conf = self._segment_confidence(avg_logprob)
-                uncertain = conf < 0.6
-                all_segments.append(
-                    {
-                        "id": len(all_segments),
-                        "start": float(seg.get("start", 0.0)) + start,
-                        "end": float(seg.get("end", 0.0)) + start,
-                        "text": seg_text,
-                        "confidence": conf,
-                        "uncertain": uncertain,
-                    }
-                )
-                if seg_text:
-                    chunk_texts.append(seg_text)
+        text = " ".join(full_text_parts).strip()
+        confidence = round(sum(confidences) / len(confidences), 4) if confidences else 0.0
 
-        all_segments = self._anti_repetition(all_segments)
-
-        raw_text = " ".join(s["text"] for s in all_segments if s.get("text")).strip()
-        corrected_text = self.corrector.enhance_text(raw_text)
-        avg_conf = (
-            sum(float(s.get("confidence", 0.0)) for s in all_segments) / len(all_segments)
-            if all_segments
-            else 0.0
-        )
-
-        return TranscriptionResult(
-            text=corrected_text,
-            raw_text=raw_text,
-            corrected_text=corrected_text,
-            language=language,
-            duration=duration_seconds,
-            segments=all_segments,
-            confidence=avg_conf,
-            difficulty_level=difficulty_level,
-        )
-
-    def transcribe_with_multipass(self, audio_path: str, language: str = "pt", difficulty_level: str = "hard", passes: int = 2) -> TranscriptionResult:
-        best = None
-        for _ in range(max(1, passes)):
-            current = self.transcribe(audio_path, language, difficulty_level)
-            if best is None or current.confidence > best.confidence:
-                best = current
-        return best
-
-    def get_model_info(self) -> dict:
         return {
-            "model_size": self.model_size,
-            "device": self.device,
-            "model_loaded": self.model is not None,
-            "engine": "openai-whisper",
-            "anti_hallucination": True,
+            "text": text,
+            "language": getattr(info, "language", language) or language,
+            "segments": segments,
+            "confidence": confidence,
         }
+
+
+def check_runtime_diagnostics(temp_dir: Path) -> dict[str, Any]:
+    errors: list[str] = []
+
+    faster_ok, faster_err = _check_import("faster_whisper")
+    if faster_err:
+        errors.append(f"faster-whisper: {faster_err}")
+
+    librosa_ok, librosa_err = _check_import("librosa")
+    if librosa_err:
+        errors.append(f"librosa: {librosa_err}")
+
+    soundfile_ok, soundfile_err = _check_import("soundfile")
+    if soundfile_err:
+        errors.append(f"soundfile: {soundfile_err}")
+
+    ffmpeg_ok = shutil.which("ffmpeg") is not None
+    if not ffmpeg_ok:
+        errors.append("ffmpeg nao encontrado no PATH")
+
+    temp_ok = True
+    temp_err: str | None = None
+    try:
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(dir=temp_dir, delete=True) as _:
+            pass
+    except Exception as exc:
+        temp_ok = False
+        temp_err = str(exc)
+        errors.append(f"temp_dir: {exc}")
+
+    return {
+        "faster_whisper_ok": faster_ok,
+        "librosa_ok": librosa_ok,
+        "soundfile_ok": soundfile_ok,
+        "ffmpeg_ok": ffmpeg_ok,
+        "temp_dir_ok": temp_ok,
+        "temp_dir": str(temp_dir),
+        "temp_dir_error": temp_err,
+        "errors": errors,
+    }
