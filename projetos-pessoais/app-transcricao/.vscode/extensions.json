@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "mongodb.mongodb-vscode",
+    "ms-vscode-remote.remote-containers",
+    "thunder-client.thunder-client",
+    "GitHub.copilot",
+    "ms-vscode.docker"
+  ]
+}
