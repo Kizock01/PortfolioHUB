@@ -33,5 +33,5 @@ web/frontend/out/
 web/backend/venv/
 web/backend/__pycache__/
 web/backend/temp_audio/
-desktop/logs/
-desktop/models/
+.runtime/
+*.pid

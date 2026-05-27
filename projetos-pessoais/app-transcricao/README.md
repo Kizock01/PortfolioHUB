@@ -1,59 +1,28 @@
-﻿# TranscritorIA
+﻿# app-transcricao
 
-Projeto organizado em duas versoes independentes: web e desktop.
+Projeto focado na versao web.
 
-## Estrutura
+Estrutura principal:
 
-- `web/`: versao web (Next.js + FastAPI)
-- `desktop/`: versao desktop (Electron + backend embutido + ffmpeg)
-- `shared/`: codigo reutilizavel
+- `web/`: frontend + backend da aplicacao web
+- `shared/`: codigo compartilhado
+- `docs/`: documentacao
+- `scripts/`: scripts auxiliares e historico
 
-## Versao web
+## Iniciar app web
 
-Use para desenvolvimento tradicional via terminal.
+Clique em `web/iniciar-web.bat`.
 
-Scripts:
-- `iniciar-web.bat`
+Esse script inicia backend e frontend em segundo plano e abre:
 
-Manual:
-- Backend: `.venv\\Scripts\\python.exe web\\backend\\app_entry.py`
-- Frontend: `npm --prefix web\\frontend run dev`
+- `http://localhost:3000`
 
-URLs:
-- Frontend: `http://localhost:3000`
-- Backend health: `http://127.0.0.1:8000/health`
-- Backend diagnostics: `http://127.0.0.1:8000/diagnostics`
+Health check do backend:
 
-## Versao desktop
+- `http://localhost:8000/health`
 
-Use para testar o aplicativo desktop e gerar instalador.
+## Parar app web
 
-Scripts:
-- `iniciar-desktop-dev.bat`
-- `gerar-exe.bat`
+Clique em `web/parar-web.bat`.
 
-Comandos equivalentes:
-- Desktop dev: `npm run dev`
-- Build instalador: `npm run dist`
-
-Saida do instalador:
-- `dist\\TranscritorIA Setup 1.0.0.exe`
-
-## O que o usuario final precisa instalar?
-
-Nada manualmente para uso normal do instalador.
-
-- Python: embutido no `backend.exe` (PyInstaller)
-- FFmpeg: embutido em `desktop/resources/ffmpeg/ffmpeg.exe`
-- Node.js: apenas para desenvolvimento/build
-
-## Logs
-
-- Backend: `AppData/Local/TranscritorIA/logs/backend.log`
-- Electron: `AppData/Roaming/transcritoria-desktop/logs/electron.log`
-
-## Observacoes
-
-- O backend usa `faster-whisper` por padrao.
-- O modelo e baixado no primeiro uso e cacheado localmente.
-- O endpoint `/diagnostics` mostra status de dependencias e modelo.
+Ele encerra apenas os processos iniciados pelo app via PID salvo em `web/.runtime/`.
