@@ -1,0 +1,44 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>TranscritorIA - Erro de inicializacao</title>
+  <style>
+    body { font-family: Segoe UI, sans-serif; margin: 32px; background: #0f172a; color: #e2e8f0; }
+    .card { max-width: 760px; margin: 0 auto; background: #1e293b; border-radius: 12px; padding: 24px; }
+    button { margin-right: 8px; border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+    .retry { background: #22c55e; color: #0b1020; }
+    .logs { background: #0ea5e9; color: #0b1020; }
+    pre { background: #0b1220; color: #fda4af; padding: 12px; border-radius: 8px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Nao foi possivel iniciar o backend</h1>
+    <p>O aplicativo detectou falha na comunicacao inicial com o motor de transcricao.</p>
+    <pre id="error">Aguardando detalhes...</pre>
+    <button class="retry" id="retry">Tentar novamente</button>
+    <button class="logs" id="logs">Abrir logs</button>
+  </div>
+
+  <script>
+    const errorEl = document.getElementById("error");
+
+    window.desktopApi.onStartupError((payload) => {
+      errorEl.textContent = `Erro: ${payload.message}\nLogs: ${payload.logPath}`;
+    });
+
+    document.getElementById("retry").addEventListener("click", async () => {
+      errorEl.textContent = "Tentando reiniciar backend...";
+      const result = await window.desktopApi.retryBackend();
+      if (!result.ok) {
+        errorEl.textContent = `Erro: ${result.error}`;
+      }
+    });
+
+    document.getElementById("logs").addEventListener("click", async () => {
+      await window.desktopApi.openLogs();
+    });
+  </script>
+</body>
+</html>

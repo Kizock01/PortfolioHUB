@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 
+import os
 import shutil
 import tempfile
 from pathlib import Path
@@ -31,8 +32,13 @@ class TranscriptionEngine:
         try:
             from faster_whisper import WhisperModel
 
-            # CPU int8 is a stable default on Windows and avoids CUDA dependency.
-            self._model = WhisperModel(self.model_size, device="cpu", compute_type="int8")
+            model_dir = os.getenv("WHISPER_MODEL_DIR")
+            self._model = WhisperModel(
+                self.model_size,
+                device="cpu",
+                compute_type="int8",
+                download_root=model_dir if model_dir else None,
+            )
             return self._model
         except Exception as exc:
             self._model_error = f"faster-whisper indisponivel: {exc}"
@@ -48,9 +54,12 @@ class TranscriptionEngine:
             temperature=0,
             vad_filter=True,
             condition_on_previous_text=False,
+            no_speech_threshold=0.6,
+            log_prob_threshold=-1.0,
+            compression_ratio_threshold=2.4,
         )
 
-        segments = []
+        segments: list[dict[str, Any]] = []
         full_text_parts: list[str] = []
         confidences: list[float] = []
 
@@ -84,7 +93,7 @@ class TranscriptionEngine:
         }
 
 
-def check_runtime_diagnostics(temp_dir: Path) -> dict[str, Any]:
+def check_runtime_diagnostics(temp_dir: Path, model_size: str) -> dict[str, Any]:
     errors: list[str] = []
 
     faster_ok, faster_err = _check_import("faster_whisper")
@@ -99,12 +108,15 @@ def check_runtime_diagnostics(temp_dir: Path) -> dict[str, Any]:
     if soundfile_err:
         errors.append(f"soundfile: {soundfile_err}")
 
-    ffmpeg_ok = shutil.which("ffmpeg") is not None
+    ffmpeg_path = os.getenv("FFMPEG_PATH") or shutil.which("ffmpeg")
+    ffmpeg_ok = bool(ffmpeg_path)
     if not ffmpeg_ok:
-        errors.append("ffmpeg nao encontrado no PATH")
+        errors.append("ffmpeg nao encontrado no PATH/FFMPEG_PATH")
 
     temp_ok = True
     temp_err: str | None = None
+    write_ok = True
+    write_err: str | None = None
     try:
         temp_dir.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(dir=temp_dir, delete=True) as _:
@@ -114,13 +126,41 @@ def check_runtime_diagnostics(temp_dir: Path) -> dict[str, Any]:
         temp_err = str(exc)
         errors.append(f"temp_dir: {exc}")
 
+    try:
+        test_file = temp_dir / ".write_test"
+        test_file.write_text("ok", encoding="utf-8")
+        test_file.unlink(missing_ok=True)
+    except Exception as exc:
+        write_ok = False
+        write_err = str(exc)
+        errors.append(f"write_permission: {exc}")
+
+    model_loadable = False
+    model_error: str | None = None
+    if faster_ok:
+        try:
+            from faster_whisper import WhisperModel
+
+            model_dir = os.getenv("WHISPER_MODEL_DIR")
+            _ = WhisperModel(model_size, device="cpu", compute_type="int8", download_root=model_dir if model_dir else None)
+            model_loadable = True
+        except Exception as exc:
+            model_error = str(exc)
+            errors.append(f"model_loadable: {exc}")
+
     return {
         "faster_whisper_ok": faster_ok,
         "librosa_ok": librosa_ok,
         "soundfile_ok": soundfile_ok,
         "ffmpeg_ok": ffmpeg_ok,
+        "ffmpeg_path": ffmpeg_path,
         "temp_dir_ok": temp_ok,
         "temp_dir": str(temp_dir),
         "temp_dir_error": temp_err,
+        "write_permission_ok": write_ok,
+        "write_permission_error": write_err,
+        "model_size": model_size,
+        "model_loadable": model_loadable,
+        "model_error": model_error,
         "errors": errors,
     }

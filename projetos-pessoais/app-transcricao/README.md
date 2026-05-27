@@ -280,3 +280,65 @@ Para dúvidas ou problemas:
 ---
 
 **Aproveite sua experiência com o TranscribeAI! 🎙️✨**
+
+## Desktop Windows (Electron + Backend Embutido)
+
+### Rodar em desenvolvimento
+
+1. Backend local:
+```powershell
+.\.venv\Scripts\python.exe backend\app_entry.py
+```
+
+2. Frontend local:
+```powershell
+npm --prefix frontend run dev
+```
+
+3. App desktop em modo dev (opcional):
+```powershell
+npm run dev
+```
+
+### Gerar backend.exe (PyInstaller)
+
+```powershell
+npm run build:backend
+```
+
+Saida esperada:
+- `dist/backend.exe`
+
+### Gerar instalador Windows
+
+```powershell
+npm run dist
+```
+
+Saida esperada:
+- `dist/TranscritorIA Setup 1.0.0.exe`
+
+### FFmpeg embutido
+
+O build desktop usa:
+- `resources/ffmpeg/ffmpeg.exe`
+
+Sem esse arquivo, o diagnostico (`/diagnostics`) vai indicar falha de FFmpeg.
+
+### Modelos do faster-whisper
+
+- Modelo padrao: `small`
+- Download ocorre no primeiro uso e fica em cache local do usuario
+- Para alterar pasta de cache, use variavel `WHISPER_MODEL_DIR`
+
+### Logs locais
+
+- Backend: `AppData/Local/TranscritorIA/logs/backend.log`
+- Electron: `AppData/Roaming/transcritoria-desktop/logs/electron.log` (quando aplicavel)
+
+### Troubleshooting rapido
+
+- `Erro de rede`: confirme backend em `http://127.0.0.1:8000/health`
+- Verifique `http://127.0.0.1:8000/diagnostics`
+- Se `ffmpeg_ok=false`, confirme `resources/ffmpeg/ffmpeg.exe`
+- Se `model_loadable=false`, revise cache/modelo e conectividade

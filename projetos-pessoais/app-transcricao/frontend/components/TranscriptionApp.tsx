@@ -34,7 +34,16 @@ import {
   isAudioFile,
 } from "@/utils";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+declare global {
+  interface Window {
+    __TRANSCRITOR_API_URL__?: string;
+  }
+}
+
+const API_URL =
+  (typeof window !== "undefined" && window.__TRANSCRITOR_API_URL__) ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:8000";
 
 export default function TranscriptionApp() {
   const store = useAppStore();
@@ -70,6 +79,21 @@ export default function TranscriptionApp() {
     localStorage.setItem("darkMode", String(store.darkMode));
     document.documentElement.classList.toggle("dark", store.darkMode);
   }, [store.darkMode]);
+
+  useEffect(() => {
+    const checkApi = async () => {
+      try {
+        await axios.get(`${API_URL}/health`, { timeout: 8000 });
+      } catch (error: any) {
+        const message =
+          error?.response?.data?.detail ||
+          error?.message ||
+          "Backend indisponível";
+        toast.error(`Falha de comunicação com backend: ${message}`);
+      }
+    };
+    checkApi();
+  }, []);
 
   const loadAudio = async (file: File) => {
     if (!isAudioFile(file)) {
@@ -181,6 +205,7 @@ export default function TranscriptionApp() {
     } catch (error: any) {
       const status = error?.response?.status;
       const data = error?.response?.data;
+      const isNetwork = !error?.response;
       const backendMessage =
         data?.detail || data?.message || error?.message || "Erro ao transcrever";
       console.error("Erro de transcrição", {
@@ -188,7 +213,11 @@ export default function TranscriptionApp() {
         data,
         url: `${API_URL}/transcribe`,
       });
-      toast.error(`Erro ${status ?? "de rede"}: ${backendMessage}`);
+      toast.error(
+        isNetwork
+          ? `Erro de rede: backend não respondeu em ${API_URL}. Detalhe: ${backendMessage}`
+          : `Erro ${status}: ${backendMessage}`
+      );
     } finally {
       store.setIsProcessing(false);
       setTimeout(() => store.setProcessingProgress(0), 500);
