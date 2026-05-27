@@ -2,17 +2,17 @@
   "name": "transcritoria-desktop",
   "version": "1.0.0",
   "description": "TranscritorIA Desktop",
-  "main": "electron/main.js",
+  "main": "desktop/electron/main.js",
   "author": "TranscritorIA",
   "license": "MIT",
   "scripts": {
     "dev": "concurrently -k \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:electron\"",
-    "dev:backend": ".\\.venv\\Scripts\\python.exe backend\\app_entry.py",
-    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": ".\\.venv\\Scripts\\python.exe web\\backend\\app_entry.py",
+    "dev:frontend": "npm --prefix web\\frontend run dev",
     "dev:electron": "wait-on tcp:3000 tcp:8000 && cross-env ELECTRON_DEV=1 electron .",
     "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "npm --prefix frontend run build",
-    "build:backend": ".\\.venv\\Scripts\\python.exe -m pip install pyinstaller && .\\.venv\\Scripts\\python.exe -m PyInstaller backend\\pyinstaller_backend.spec --noconfirm",
+    "build:frontend": "npm --prefix web\\frontend run build",
+    "build:backend": ".\\.venv\\Scripts\\python.exe -m pip install pyinstaller && .\\.venv\\Scripts\\python.exe -m PyInstaller web\\backend\\pyinstaller_backend.spec --noconfirm",
     "package": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder"
   },
@@ -27,9 +27,9 @@
     "appId": "com.transcritoria.desktop",
     "productName": "TranscritorIA",
     "files": [
-      "electron/**/*",
-      "frontend/out/**/*",
-      "frontend/public/**/*"
+      "desktop/electron/**/*",
+      "web/frontend/out/**/*",
+      "web/frontend/public/**/*"
     ],
     "extraResources": [
       {
@@ -37,7 +37,7 @@
         "to": "backend/backend.exe"
       },
       {
-        "from": "resources/ffmpeg",
+        "from": "desktop/resources/ffmpeg",
         "to": "ffmpeg"
       }
     ],

@@ -26,7 +26,7 @@ function logLine(message) {
 
 function resolveFfmpegPath() {
   const bundled = isDev
-    ? path.join(process.cwd(), "resources", "ffmpeg", "ffmpeg.exe")
+    ? path.join(process.cwd(), "desktop", "resources", "ffmpeg", "ffmpeg.exe")
     : path.join(process.resourcesPath, "ffmpeg", "ffmpeg.exe");
 
   if (fs.existsSync(bundled)) {
@@ -39,7 +39,7 @@ function resolveBackendCommand() {
   if (isDev) {
     return {
       cmd: path.join(process.cwd(), ".venv", "Scripts", "python.exe"),
-      args: [path.join(process.cwd(), "backend", "app_entry.py")],
+      args: [path.join(process.cwd(), "web", "backend", "app_entry.py")],
       cwd: process.cwd(),
     };
   }
@@ -158,7 +158,7 @@ async function createWindow() {
   if (isDev) {
     await mainWindow.loadURL("http://localhost:3000");
   } else {
-    await mainWindow.loadFile(path.join(process.resourcesPath, "app", "frontend", "out", "index.html"));
+    await mainWindow.loadFile(path.join(process.resourcesPath, "app", "web", "frontend", "out", "index.html"));
   }
 }
 
@@ -183,7 +183,7 @@ ipcMain.handle("app:retry-backend", async () => {
     if (isDev) {
       await mainWindow.loadURL("http://localhost:3000");
     } else {
-      await mainWindow.loadFile(path.join(process.resourcesPath, "app", "frontend", "out", "index.html"));
+      await mainWindow.loadFile(path.join(process.resourcesPath, "app", "web", "frontend", "out", "index.html"));
     }
   }
   return status;
