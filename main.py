@@ -34,13 +34,34 @@ def mostrar_dica(resultado):
         print("Muito baixo.")
 
 
+def ler_palpite():
+    while True:
+        entrada = input("Digite sua tentativa: ").strip()
+
+        if not entrada:
+            print("Digite um numero.")
+            continue
+
+        try:
+            palpite = int(entrada)
+        except ValueError:
+            print("Digite apenas numeros.")
+            continue
+
+        if palpite < MENOR_SENHA or palpite > MAIOR_SENHA:
+            print(f"Digite um numero entre {MENOR_SENHA} e {MAIOR_SENHA}.")
+            continue
+
+        return palpite
+
+
 def jogar():
     senha_secreta = gerar_senha()
     tentativas = 0
     acertou = False
 
     while not acertou and tentativas < MAX_TENTATIVAS:
-        tentativa = int(input("Digite sua tentativa: "))
+        tentativa = ler_palpite()
         tentativas += 1
         resultado = avaliar_palpite(tentativa, senha_secreta)
         mostrar_dica(resultado)
