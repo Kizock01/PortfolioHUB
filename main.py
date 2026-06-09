@@ -1,4 +1,8 @@
-SENHA_SECRETA = 42
+import random
+
+
+MENOR_SENHA = 1
+MAIOR_SENHA = 100
 
 
 def mostrar_intro():
@@ -10,6 +14,9 @@ def mostrar_intro():
 
 def main():
     mostrar_intro()
+    print(f"A senha esta entre {MENOR_SENHA} e {MAIOR_SENHA}.")
+
+    senha_secreta = random.randint(MENOR_SENHA, MAIOR_SENHA)
     tentativas = 0
     acertou = False
 
@@ -17,11 +24,11 @@ def main():
         tentativa = int(input("Digite sua tentativa: "))
         tentativas += 1
 
-        if tentativa == SENHA_SECRETA:
+        if tentativa == senha_secreta:
             print("Acertou! A porta foi desbloqueada.")
             print(f"Voce precisou de {tentativas} tentativa(s).")
             acertou = True
-        elif tentativa > SENHA_SECRETA:
+        elif tentativa > senha_secreta:
             print("Muito alto.")
         else:
             print("Muito baixo.")
