@@ -3,6 +3,7 @@ import random
 
 MENOR_SENHA = 1
 MAIOR_SENHA = 100
+MAX_TENTATIVAS = 7
 
 
 def mostrar_intro():
@@ -15,12 +16,13 @@ def mostrar_intro():
 def main():
     mostrar_intro()
     print(f"A senha esta entre {MENOR_SENHA} e {MAIOR_SENHA}.")
+    print(f"Voce tem {MAX_TENTATIVAS} tentativas.")
 
     senha_secreta = random.randint(MENOR_SENHA, MAIOR_SENHA)
     tentativas = 0
     acertou = False
 
-    while not acertou:
+    while not acertou and tentativas < MAX_TENTATIVAS:
         tentativa = int(input("Digite sua tentativa: "))
         tentativas += 1
 
@@ -32,6 +34,10 @@ def main():
             print("Muito alto.")
         else:
             print("Muito baixo.")
+
+    if not acertou:
+        print("Suas tentativas acabaram. A porta continuou trancada.")
+        print(f"A senha era {senha_secreta}.")
 
 
 if __name__ == "__main__":
