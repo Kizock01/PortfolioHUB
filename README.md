@@ -42,3 +42,11 @@ Digite sua tentativa: 42
 Acertou! A porta foi desbloqueada.
 Voce precisou de 3 tentativa(s).
 ```
+
+## Conceitos usados
+
+- Entrada de dados
+- Condicionais
+- Laco de repeticao
+- Variaveis
+- Funcoes
