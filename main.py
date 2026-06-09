@@ -10,14 +10,21 @@ def mostrar_intro():
 
 def main():
     mostrar_intro()
-    tentativa = int(input("Digite sua tentativa: "))
+    tentativas = 0
+    acertou = False
 
-    if tentativa == SENHA_SECRETA:
-        print("Acertou! A porta foi desbloqueada.")
-    elif tentativa > SENHA_SECRETA:
-        print("Muito alto.")
-    else:
-        print("Muito baixo.")
+    while not acertou:
+        tentativa = int(input("Digite sua tentativa: "))
+        tentativas += 1
+
+        if tentativa == SENHA_SECRETA:
+            print("Acertou! A porta foi desbloqueada.")
+            print(f"Voce precisou de {tentativas} tentativa(s).")
+            acertou = True
+        elif tentativa > SENHA_SECRETA:
+            print("Muito alto.")
+        else:
+            print("Muito baixo.")
 
 
 if __name__ == "__main__":
