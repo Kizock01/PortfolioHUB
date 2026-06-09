@@ -13,31 +13,52 @@ def mostrar_intro():
     print("Descubra a senha correta para desbloquear a saida.")
 
 
-def main():
-    mostrar_intro()
-    print(f"A senha esta entre {MENOR_SENHA} e {MAIOR_SENHA}.")
-    print(f"Voce tem {MAX_TENTATIVAS} tentativas.")
+def gerar_senha():
+    return random.randint(MENOR_SENHA, MAIOR_SENHA)
 
-    senha_secreta = random.randint(MENOR_SENHA, MAIOR_SENHA)
+
+def avaliar_palpite(palpite, senha_secreta):
+    if palpite == senha_secreta:
+        return "acertou"
+    if palpite > senha_secreta:
+        return "alto"
+    return "baixo"
+
+
+def mostrar_dica(resultado):
+    if resultado == "acertou":
+        print("Acertou! A porta foi desbloqueada.")
+    elif resultado == "alto":
+        print("Muito alto.")
+    else:
+        print("Muito baixo.")
+
+
+def jogar():
+    senha_secreta = gerar_senha()
     tentativas = 0
     acertou = False
 
     while not acertou and tentativas < MAX_TENTATIVAS:
         tentativa = int(input("Digite sua tentativa: "))
         tentativas += 1
+        resultado = avaliar_palpite(tentativa, senha_secreta)
+        mostrar_dica(resultado)
 
-        if tentativa == senha_secreta:
-            print("Acertou! A porta foi desbloqueada.")
+        if resultado == "acertou":
             print(f"Voce precisou de {tentativas} tentativa(s).")
             acertou = True
-        elif tentativa > senha_secreta:
-            print("Muito alto.")
-        else:
-            print("Muito baixo.")
 
     if not acertou:
         print("Suas tentativas acabaram. A porta continuou trancada.")
         print(f"A senha era {senha_secreta}.")
+
+
+def main():
+    mostrar_intro()
+    print(f"A senha esta entre {MENOR_SENHA} e {MAIOR_SENHA}.")
+    print(f"Voce tem {MAX_TENTATIVAS} tentativas.")
+    jogar()
 
 
 if __name__ == "__main__":
