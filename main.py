@@ -1,7 +1,8 @@
 def mostrar_intro():
     print("=== Adivinha Senha ===")
-    print("Voce esta preso em uma sala digital.")
-    print("Descubra a senha para desbloquear a porta.")
+    print("Voce acordou dentro de uma sala digital trancada.")
+    print("No painel da porta existe uma senha numerica escondida.")
+    print("Descubra a senha correta para desbloquear a saida.")
 
 
 def main():
