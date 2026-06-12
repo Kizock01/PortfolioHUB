@@ -49,4 +49,4 @@ Voce precisou de 3 tentativa(s).
 - Condicionais
 - Laço de repetição
 - Variáveis
-- Funçôes
+- Funções
