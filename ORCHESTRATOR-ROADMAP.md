@@ -12,8 +12,8 @@ Critérios de sucesso: apresentação e trajetória atualizadas; destaque à res
 
 | Marco | Epic | Entrega | Estado |
 | --- | --- | --- | --- |
-| M01 — Apresentação atualizada e validada | E01 | [#2 — Conteúdo, projetos e visual do site estático](https://github.com/Kizock01/PortfolioHUB/issues/2), AFK, sem dependências entre slices | `in_progress` |
+| M01 — Apresentação atualizada e validada | E01 | [#2 — Conteúdo, projetos e visual do site estático](https://github.com/Kizock01/PortfolioHUB/issues/2), AFK, sem dependências entre slices | `done` |
 
 ## Estado
 
-Implementação local concluída e QA aprovado na branch `codex/atualizar-portfolio`, com [evidências de verificação](docs/qa/portfolio-refresh.md). A página passou em cinco larguras de tela, de 320 a 1440 px, com zero violações detectadas pelo axe. A entrega permanece `in_progress` enquanto aguarda publicação; as Issues seguem abertas. Não há outras Epics planejadas nesta entrega.
+Implementação, QA e publicação concluídos na `main`, com [evidências de verificação](docs/qa/portfolio-refresh.md). A página passou em cinco larguras, de 320 a 1440 px, com zero violações detectadas pelo axe. O GitHub Pages publicou o commit `d70de15` com sucesso em 06/09/2026; a versão nova foi confirmada no endereço público. M01 está concluído. A Epic permanece aberta para revisão do titular, sem pendência técnica de publicação. Não há outras Epics planejadas nesta entrega.

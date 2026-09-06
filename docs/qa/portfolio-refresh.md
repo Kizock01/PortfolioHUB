@@ -44,4 +44,4 @@ Evidências locais entregues na sessão: `portfolio-desktop.png`, `portfolio-mob
 
 ## Publicação
 
-A configuração de GitHub Pages e os projetos internos foram preservados. As alterações desta entrega ainda são locais; publicação e verificação da versão nova no endereço público dependem do envio à branch configurada no Pages.
+Publicado na `main` em 06/09/2026, a partir do commit `d70de15`. O workflow [pages build and deployment](https://github.com/Kizock01/PortfolioHUB/actions/runs/34030780989) terminou com sucesso e a página pública respondeu HTTP 200 com o novo HTML. A configuração existente foi preservada: GitHub Pages a partir de `main`, diretório raiz. O PDF do currículo não foi alterado.
