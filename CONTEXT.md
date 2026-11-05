@@ -23,3 +23,7 @@ _Avoid_: Experiência profissional.
 **Projeto pessoal**:
 Aplicação ou estudo independente reunido no portfólio, com escopo e maturidade próprios.
 _Avoid_: Produto comercial comprovado, experiência profissional.
+
+**Projeto em equipe**:
+Trabalho feito em grupo durante uma formação, com repositório e autoria compartilhados. No portfólio, a seção separa o que Guilherme construiu do que é de outras pessoas, com os créditos da própria documentação da equipe. O Lume (Challenge 01 da Residência em IA, Grupo 7) é o exemplo atual.
+_Avoid_: Produto próprio, experiência profissional, atribuir a Guilherme o modelo "mesmo fato" (é de Matheus Henrique Picone Rosa).
